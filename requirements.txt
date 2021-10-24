@@ -1,0 +1,4 @@
+for brew:
+maven swagger-codegen
+
+for python:
