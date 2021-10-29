@@ -9,11 +9,10 @@ wd = webdriver.Safari()
 
 
 wd.get(f'http://www.strava.com/oauth/authorize?client_id={argv[1]}&response_type=code&redirect_uri=http://localhost/exchange_token&approval_prompt=force&scope=activity:read_all')
-# time.sleep(2)
 
 cookies_button = wd.find_element_by_xpath('//*[@id="stravaCookieBanner"]/div/div/button')
 cookies_button.click()
-time.sleep(2)
+time.sleep(1)
 
 file = open('logins.txt')
 
@@ -25,12 +24,12 @@ login_button.click()
 
 file.close()
 
-time.sleep(2)
+time.sleep(1)
 
 aut_button = wd.find_element_by_id('authorize')
 aut_button.click()
 
-time.sleep(3)
+time.sleep(2)
 
 url = wd.current_url
 

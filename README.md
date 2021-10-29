@@ -10,6 +10,6 @@ Projet personnel d'analyse de course. Cela me permettra de travailler
 
 Dans un terminal, faire :
     
-    python connect.py `cat credentials.txt`
+    ?
 
 Pour se connecter à l'API strava.

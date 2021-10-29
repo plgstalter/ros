@@ -1,3 +1,11 @@
 credentials.txt
 *pycache*
 *xcf
+access.py
+strava_tokens*
+notes.md
+activities.py
+*.csv
+logins.txt
+index.html
+request_result.json
