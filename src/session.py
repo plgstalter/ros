@@ -4,6 +4,8 @@ from selenium import webdriver
 import requests
 import json
 from pandas import json_normalize
+from os import system
+#from pathlib import Path
 
 class Session:
 
@@ -13,6 +15,8 @@ class Session:
         self.mail = file.readline()[:-1]
         self.pswd = file.readline()[:-1]
         file.close()
+        self.secret = None #temporary
+        system('mkdir `date "+%d_%m_%H_%M_%S"`') #create a directory for the instance, where all json results will be stored
 
     def __repr__(self) -> str:
         return f'instance du client {self.client_id}'
@@ -104,3 +108,24 @@ class Session:
             df = json_normalize(_requete)
             df.to_csv(f'{gear_id}.csv')
             return None
+
+    def api_connection(self):
+        response = requests.post(
+                            url = 'https://www.strava.com/oauth/token',
+                            data = {
+                                    'client_id': self.client_id,
+                                    'client_secret': self.secret,
+                                    'code': self.code,
+                                    'grant_type': 'authorization_code'
+                                    }
+                        )
+        #Save json response as a variable
+        strava_tokens = response.json()
+        # Save tokens to file
+        with open('strava_tokens.json', 'w') as outfile:
+            json.dump(strava_tokens, outfile)
+        # Open JSON file and print the file contents 
+        # to check it's worked properly
+        with open('strava_tokens.json') as check:
+            data = json.load(check)
+        print(data)
