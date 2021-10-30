@@ -15,7 +15,6 @@ class Session:
         self.mail = file.readline()[:-1]
         self.pswd = file.readline()[:-1]
         file.close()
-        self.secret = None #temporary
         system('mkdir `date "+%d_%m_%H_%M_%S"`') #create a directory for the instance, where all json results will be stored
 
     def __repr__(self) -> str:
@@ -82,6 +81,9 @@ class Session:
         self.client_id = wd.find_element_by_xpath('//*[@id="API"]/table/tbody/tr[3]/td[2]').get_attribute('innerHTML')
         self.access_token = _access_token.get_attribute('innerHTML')
 
+        secret_button = wd.find_element_by_xpath('/html/body/div/div[3]/div/div[1]/table/tbody/tr[4]/td[2]/a')
+        secret_button.click()
+        self.secret = wd.find_element_by_xpath('/html/body/div/div[3]/div/div[1]/table/tbody/tr[4]/td[2]/span').get_attribute('innerHTML')
 
         wd.quit()
         return None
