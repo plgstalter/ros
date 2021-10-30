@@ -1,5 +1,9 @@
 import time
+from requests.api import request
 from selenium import webdriver
+import requests
+import json
+from pandas import json_normalize
 
 class Session:
 
@@ -8,6 +12,7 @@ class Session:
         file = open(_file, 'r')
         self.mail = file.readline()[:-1]
         self.pswd = file.readline()[:-1]
+        file.close()
 
     def __repr__(self) -> str:
         return f'instance du client {self.client_id}'
@@ -65,21 +70,38 @@ class Session:
 
         time.sleep(2)
 
-        # secret_button = wd.find_element_by_id('show-secret')
-        # secret_button.click()
-
         token_button = wd.find_element_by_id('show-token')
         token_button.click()
 
         _access_token = wd.find_element_by_xpath('//*[@id="API"]/table/tbody/tr[5]/td[2]/span')
-        # _renew = wd.find_element_by_xpath('//*[@id="API"]/table/tbody/tr[6]/td[2]/span')
 
         self.client_id = wd.find_element_by_xpath('//*[@id="API"]/table/tbody/tr[3]/td[2]').get_attribute('innerHTML')
         self.access_token = _access_token.get_attribute('innerHTML')
-        # renew = _renew.get_attribute('innerHTML')
 
-        # self.balise = renew
 
         wd.quit()
         return None
 
+    def get_activities(self):
+            url = "https://www.strava.com/api/v3/activities"
+            request = requests.get(url + '?access_token' + self.access_token)
+            request = request.json()
+            df = json_normalize(request)
+            df.to_csv('strava_activities.csv')
+            return None
+
+    def get_logged_activities(self):
+            url = "https://www.strava.com/api/v3/athletes/activities"
+            request = requests.get(url + '?access_token' + self.access_token)
+            request = request.json()
+            df = json_normalize(request)
+            df.to_csv('strava_Logged_activities.csv')
+            return None
+
+    def get_gear_by_id(self, gear_id):
+            url = f"https://www.strava.com/api/v3/gear/{gear_id}"
+            request = requests.get(url + '?access_token' + self.access_token)
+            request = request.json()
+            df = json_normalize(request)
+            df.to_csv(f'{gear_id}.csv')
+            return None
