@@ -89,11 +89,16 @@ class Session:
         return None
 
     def get_activities(self):
-            url = "https://www.strava.com/api/v3/activities"
-            _requete= requests.get(url + '?access_token' + self.access_token)
-            _requete= _requete.json()
-            df = json_normalize(_requete)
-            return df
+
+        with open('strava_tokens.json') as json_file:
+            strava_tokens = json.load(json_file)
+        # Loop through all activities
+        _access_token = strava_tokens['access_token']
+        url = "https://www.strava.com/api/v3/activities"
+        _requete= requests.get(url + '?access_token' + _access_token)
+        _requete= _requete.json()
+        df = json_normalize(_requete)
+        return df
 
     def get_logged_activities(self) -> None:
             url = "https://www.strava.com/api/v3/athletes/activities"
