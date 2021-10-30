@@ -84,24 +84,23 @@ class Session:
 
     def get_activities(self):
             url = "https://www.strava.com/api/v3/activities"
-            request = requests.get(url + '?access_token' + self.access_token)
-            request = request.json()
-            df = json_normalize(request)
-            df.to_csv('strava_activities.csv')
-            return None
+            _requete= requests.get(url + '?access_token' + self.access_token)
+            _requete= _requete.json()
+            df = json_normalize(_requete)
+            return df
 
-    def get_logged_activities(self):
+    def get_logged_activities(self) -> None:
             url = "https://www.strava.com/api/v3/athletes/activities"
-            request = requests.get(url + '?access_token' + self.access_token)
-            request = request.json()
-            df = json_normalize(request)
+            _requete= requests.get(url + '?access_token' + self.access_token)
+            _requete= _requete.json()
+            df = json_normalize(_requete)
             df.to_csv('strava_Logged_activities.csv')
             return None
 
-    def get_gear_by_id(self, gear_id):
+    def get_gear_by_id(self, gear_id) -> None:
             url = f"https://www.strava.com/api/v3/gear/{gear_id}"
-            request = requests.get(url + '?access_token' + self.access_token)
-            request = request.json()
-            df = json_normalize(request)
+            _requete= requests.get(url + '?access_token' + self.access_token)
+            _requete= _requete.json()
+            df = json_normalize(_requete)
             df.to_csv(f'{gear_id}.csv')
             return None
