@@ -2,3 +2,8 @@ for brew:
 maven swagger-codegen
 
 for python:
+gpxpy
+selenium
+matplotlib
+numpy
+time

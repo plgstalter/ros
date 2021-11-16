@@ -5,7 +5,6 @@ import requests
 import json
 from pandas import json_normalize
 from os import system
-#from pathlib import Path
 
 class Session:
 
@@ -90,31 +89,28 @@ class Session:
 
     def get_activities(self):
 
-        with open('strava_tokens.json') as json_file:
-            strava_tokens = json.load(json_file)
         # Loop through all activities
-        _access_token = strava_tokens['access_token']
         url = "https://www.strava.com/api/v3/activities"
-        _requete= requests.get(url + '?access_token' + _access_token)
+        _requete= requests.get(url + '?access_token' + self.access_token)
         _requete= _requete.json()
         df = json_normalize(_requete)
         return df
 
-    def get_logged_activities(self) -> None:
+    def get_logged_activities(self):
             url = "https://www.strava.com/api/v3/athletes/activities"
             _requete= requests.get(url + '?access_token' + self.access_token)
             _requete= _requete.json()
             df = json_normalize(_requete)
             df.to_csv('strava_Logged_activities.csv')
-            return None
+            return df 
 
-    def get_gear_by_id(self, gear_id) -> None:
+    def get_gear_by_id(self, gear_id):
             url = f"https://www.strava.com/api/v3/gear/{gear_id}"
             _requete= requests.get(url + '?access_token' + self.access_token)
             _requete= _requete.json()
             df = json_normalize(_requete)
             df.to_csv(f'{gear_id}.csv')
-            return None
+            return df
 
     def api_connection(self):
         response = requests.post(
@@ -135,4 +131,6 @@ class Session:
         # to check it's worked properly
         with open('strava_tokens.json') as check:
             data = json.load(check)
+            self.access_token = data['access_token']
+            self.refresh = data['refresh_token']
         print(data)
