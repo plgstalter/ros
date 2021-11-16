@@ -9,4 +9,4 @@ activities.py
 logins.txt
 index.html
 request_result.json
-.ipynb*
+*.ipynb*
